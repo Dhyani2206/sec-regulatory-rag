@@ -1,0 +1,23 @@
+{
+  "files": [
+    {
+      "file": "D:\\Extra\\sec_regulatory\\data\\regulations_processed\\regsk_229_2025.jsonl",
+      "total_sections": 138,
+      "empty_text": 0,
+      "missing_citation": 0,
+      "parts": {
+        "229": 138
+      }
+    },
+    {
+      "file": "D:\\Extra\\sec_regulatory\\data\\regulations_processed\\regsx_210_2025.jsonl",
+      "total_sections": 105,
+      "empty_text": 0,
+      "missing_citation": 0,
+      "parts": {
+        "210": 105
+      }
+    }
+  ],
+  "notes": []
+}

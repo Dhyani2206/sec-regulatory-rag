@@ -1,0 +1,12 @@
+{
+  "source": "govinfo:CFR-2025-title17",
+  "year": "2025",
+  "title": "17",
+  "total_rule_sections": 243,
+  "regsk_229": 138,
+  "regsx_210": 105,
+  "outputs": {
+    "regsk": "D:\\Extra\\sec_regulatory\\data\\regulations_processed\\regsk_229_2025.jsonl",
+    "regsx": "D:\\Extra\\sec_regulatory\\data\\regulations_processed\\regsx_210_2025.jsonl"
+  }
+}

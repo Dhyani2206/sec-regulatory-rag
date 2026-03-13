@@ -1,0 +1,8 @@
+rule_id,rule_name,applies_to,mapped_section,check_type,min_chars,keywords,severity,rule_citation,rule_query,filing_query,evidence mode,notes
+SK-105,Risk Factors (Reg S-K Item 105),10-K,ITEM 1A,presence,2000,,HIGH,17 CFR 229.105,,,rule_strict,Item 1A should exist and be substantive
+MDNA-10K,MD&A,10-K,ITEM 7,presence,2000,,HIGH,17 CFR 229.303,,,rule_strict,Item 7 should exist and be substantive
+MDNA-10Q,MD&A,10-Q,ITEM 2,presence,1500,,HIGH,17 CFR 229.303,,,rule_strict,Item 2 should exist and be substantive
+CYBER-RISK,Cybersecurity risk mention,10-K,ITEM 1A,keyword,0,cyber\s?security|information security|data breach|ransomware|incident response,MED,17 CFR 229.106,cybersecurity risk management disclosure,cybersecurity risk,heuristic,Heuristic topic check: topic may appear in Risk Factors even if formal cybersecurity disclosures are elsewhere
+SUPPLYCHAIN,Supplier/supply chain risk mention,10-K,ITEM 1A,keyword,0,supply chain|supplier|third[- ]party|vendor,LOW,,supply chain risk disclosure,supply chain disruption,heuristic,Heuristic only
+LIQUIDITY,Liquidity discussion in MD&A,10-K,ITEM 7,keyword,0,liquidity|capital\s+resources|cash\s+flow|cash\s+flows,HIGH,17 CFR 229.303,liquidity capital resources disclosure,liquidity cash flows,rule_strict,MD&A must discuss liquidity and capital resources
+LEGAL,Legal Proceedings Disclosure,10-K,ITEM 3,presence,500,,MED,17 CFR 229.103,legal proceedings disclosure requirements,legal proceedings litigation,rule_strict,Item 3 must disclose material litigation

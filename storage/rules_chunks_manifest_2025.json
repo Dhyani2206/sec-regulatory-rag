@@ -1,0 +1,13 @@
+{
+  "year": "2025",
+  "inputs": [
+    "D:\\Extra\\sec_regulatory\\data\\regulations_processed\\regsk_229_2025.jsonl",
+    "D:\\Extra\\sec_regulatory\\data\\regulations_processed\\regsx_210_2025.jsonl"
+  ],
+  "output": "D:\\Extra\\sec_regulatory\\storage\\rules_chunks.jsonl",
+  "rule_chunks_written": 1205,
+  "per_part_chunks": {
+    "229": 836,
+    "210": 369
+  }
+}

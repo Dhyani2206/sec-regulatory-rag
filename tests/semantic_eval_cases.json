@@ -1,0 +1,389 @@
+[
+  {
+    "case_id": "RULE_001",
+    "mode": "strict",
+    "type": "rule_only",
+    "query": "What does 17 CFR 229.105 require?",
+    "expected_rule_citation": "17 CFR 229.105"
+  },
+  {
+    "case_id": "RULE_002",
+    "mode": "strict",
+    "type": "rule_only",
+    "query": "What does 17 CFR 229.303 require?",
+    "expected_rule_citation": "17 CFR 229.303"
+  },
+  {
+    "case_id": "RULE_003",
+    "mode": "strict",
+    "type": "rule_only",
+    "query": "Explain 17 CFR 229.105",
+    "expected_rule_citation": "17 CFR 229.105"
+  },
+  {
+    "case_id": "RULE_004",
+    "mode": "strict",
+    "type": "rule_only",
+    "query": "Summarize 17 CFR 229.303",
+    "expected_rule_citation": "17 CFR 229.303"
+  },
+  {
+    "case_id": "RULE_005",
+    "mode": "strict",
+    "type": "rule_only",
+    "query": "What is required by 17 CFR 229.105?",
+    "expected_rule_citation": "17 CFR 229.105"
+  },
+  {
+    "case_id": "RULE_006",
+    "mode": "strict",
+    "type": "rule_only",
+    "query": "What does Item 105 require?",
+    "expected_rule_citation": "17 CFR 229.105"
+  },
+  {
+    "case_id": "RULE_007",
+    "mode": "strict",
+    "type": "rule_only",
+    "query": "Explain Item 303",
+    "expected_rule_citation": "17 CFR 229.303"
+  },
+
+  {
+    "case_id": "FILING_001",
+    "mode": "strict",
+    "type": "filing_scoped",
+    "company": "VISA",
+    "form_folder": "10-k",
+    "year": "2024",
+    "query": "Where are risk factors disclosed?",
+    "expected_section": "ITEM 1A"
+  },
+  {
+    "case_id": "FILING_002",
+    "mode": "strict",
+    "type": "filing_scoped",
+    "company": "VISA",
+    "form_folder": "10-k",
+    "year": "2024",
+    "query": "Where is Management's Discussion and Analysis disclosed?",
+    "expected_section": "ITEM 7"
+  },
+  {
+    "case_id": "FILING_003",
+    "mode": "strict",
+    "type": "filing_scoped",
+    "company": "AAPL",
+    "form_folder": "10-q",
+    "year": "2024",
+    "query": "Where is Management's Discussion and Analysis disclosed?",
+    "expected_section": "ITEM 2"
+  },
+  {
+    "case_id": "FILING_004",
+    "mode": "strict",
+    "type": "filing_scoped",
+    "company": "MSFT",
+    "form_folder": "10-k",
+    "year": "2024",
+    "query": "Where are risk factors disclosed?",
+    "expected_section": "ITEM 1A"
+  },
+  {
+    "case_id": "FILING_005",
+    "mode": "strict",
+    "type": "filing_scoped",
+    "company": "WMT",
+    "form_folder": "10-k",
+    "year": "2024",
+    "query": "Where is Management's Discussion and Analysis disclosed?",
+    "expected_section": "ITEM 7"
+  },
+  {
+    "case_id": "FILING_006",
+    "mode": "strict",
+    "type": "filing_scoped",
+    "company": "VISA",
+    "form_folder": "10-q",
+    "year": "2024",
+    "query": "Where is MD&A disclosed?",
+    "expected_section": "ITEM 2"
+  },
+  {
+    "case_id": "FILING_007",
+    "mode": "strict",
+    "type": "filing_scoped",
+    "company": "AAPL",
+    "form_folder": "10-k",
+    "year": "2024",
+    "query": "Where is MD&A disclosed?",
+    "expected_section": "ITEM 7"
+  },
+  {
+    "case_id": "FILING_008",
+    "mode": "strict",
+    "type": "filing_scoped",
+    "company": "MSFT",
+    "form_folder": "10-k",
+    "year": "2024",
+    "query": "Where are legal proceedings disclosed?",
+    "expected_section": "ITEM 3"
+  },
+  {
+    "case_id": "FILING_009",
+    "mode": "strict",
+    "type": "filing_scoped",
+    "company": "JPM",
+    "form_folder": "10-k",
+    "year": "2024",
+    "query": "Where is litigation disclosed?",
+    "expected_section": "ITEM 3"
+  },
+  {
+    "case_id": "FILING_010",
+    "mode": "strict",
+    "type": "filing_scoped",
+    "company": "BAC",
+    "form_folder": "10-k",
+    "year": "2024",
+    "query": "Where is management discussion and analysis disclosed?",
+    "expected_section": "ITEM 7"
+  },
+  {
+    "case_id": "FILING_011",
+    "mode": "strict",
+    "type": "filing_scoped",
+    "company": "WMT",
+    "form_folder": "10-q",
+    "year": "2024",
+    "query": "Where is management discussion disclosed?",
+    "expected_section": "ITEM 2"
+  },
+  {
+    "case_id": "FILING_012",
+    "mode": "strict",
+    "type": "filing_scoped",
+    "company": "VISA",
+    "form_folder": "10-k",
+    "year": "2024",
+    "query": "Where are legal proceedings disclosed?",
+    "expected_section": "ITEM 3"
+  },
+
+  {
+    "case_id": "HEUR_001",
+    "mode": "heuristic",
+    "type": "filing_scoped",
+    "company": "VISA",
+    "form_folder": "10-k",
+    "year": "2024",
+    "query": "Where is cybersecurity discussed?",
+    "expected_section": "ITEM 1A"
+  },
+  {
+    "case_id": "HEUR_002",
+    "mode": "heuristic",
+    "type": "filing_scoped",
+    "company": "AAPL",
+    "form_folder": "10-k",
+    "year": "2024",
+    "query": "Where is cybersecurity discussed?",
+    "expected_section": "ITEM 1C",
+    "allowed_sections": ["ITEM 1A"]
+  },
+  {
+    "case_id": "HEUR_003",
+    "mode": "heuristic",
+    "type": "filing_scoped",
+    "company": "JPM",
+    "form_folder": "10-k",
+    "year": "2024",
+    "query": "Where is liquidity discussed?",
+    "expected_section": "ITEM 7"
+  },
+  {
+    "case_id": "HEUR_004",
+    "mode": "heuristic",
+    "type": "filing_scoped",
+    "company": "BAC",
+    "form_folder": "10-k",
+    "year": "2024",
+    "query": "Where is liquidity discussed?",
+    "expected_section": "ITEM 7"
+  },
+  {
+    "case_id": "HEUR_005",
+    "mode": "heuristic",
+    "type": "filing_scoped",
+    "company": "MSFT",
+    "form_folder": "10-k",
+    "year": "2024",
+    "query": "Where is information security discussed?",
+    "expected_section": "ITEM 1A",
+    "allowed_sections": ["ITEM 1C"]
+  },
+  {
+    "case_id": "HEUR_006",
+    "mode": "heuristic",
+    "type": "filing_scoped",
+    "company": "AAPL",
+    "form_folder": "10-k",
+    "year": "2024",
+    "query": "Where are data breach risks discussed?",
+    "expected_section": "ITEM 1C",
+    "allowed_sections": ["ITEM 1A"]
+  },
+  {
+    "case_id": "HEUR_007",
+    "mode": "heuristic",
+    "type": "filing_scoped",
+    "company": "WMT",
+    "form_folder": "10-k",
+    "year": "2024",
+    "query": "Where is supply chain discussed?",
+    "expected_section": "ITEM 1A",
+    "allowed_sections": ["ITEM 1", "ITEM 7"]
+  },
+  {
+    "case_id": "HEUR_008",
+    "mode": "heuristic",
+    "type": "filing_scoped",
+    "company": "VISA",
+    "form_folder": "10-k",
+    "year": "2024",
+    "query": "Where are vendor risks discussed?",
+    "expected_section": "ITEM 1A",
+    "allowed_sections": ["ITEM 1", "ITEM 7"]
+  },
+  {
+    "case_id": "HEUR_009",
+    "mode": "heuristic",
+    "type": "filing_scoped",
+    "company": "JPM",
+    "form_folder": "10-k",
+    "year": "2024",
+    "query": "Where are cash flows discussed?",
+    "expected_section": "ITEM 7",
+    "allowed_sections": ["ITEM 8"]
+  },
+  {
+    "case_id": "HEUR_010",
+    "mode": "heuristic",
+    "type": "filing_scoped",
+    "company": "BAC",
+    "form_folder": "10-q",
+    "year": "2024",
+    "query": "Where are capital resources discussed?",
+    "expected_section": "ITEM 2"
+  },
+  {
+    "case_id": "HEUR_011",
+    "mode": "heuristic",
+    "type": "filing_scoped",
+    "company": "MSFT",
+    "form_folder": "10-q",
+    "year": "2024",
+    "query": "Where is cybersecurity discussed?",
+    "expected_section": "ITEM 2",
+    "allowed_sections": ["ITEM 1A"]
+  },
+  {
+    "case_id": "HEUR_012",
+    "mode": "heuristic",
+    "type": "filing_scoped",
+    "company": "WMT",
+    "form_folder": "10-q",
+    "year": "2024",
+    "query": "Where is liquidity discussed?",
+    "expected_section": "ITEM 2"
+  },
+
+  {
+    "case_id": "NEG_001",
+    "mode": "refusal",
+    "type": "filing_scoped",
+    "company": "VISA",
+    "form_folder": "10-q",
+    "year": "2024",
+    "query": "Where are risk factors disclosed?",
+    "expected_section": "ITEM 1A",
+    "allow_no_hits": true
+  },
+  {
+    "case_id": "NEG_002",
+    "mode": "refusal",
+    "type": "filing_scoped",
+    "company": "AAPL",
+    "form_folder": "10-q",
+    "year": "2024",
+    "query": "Where are risk factors disclosed?",
+    "expected_section": "ITEM 1A",
+    "allow_no_hits": true
+  },
+  {
+    "case_id": "NEG_003",
+    "mode": "refusal",
+    "type": "filing_scoped",
+    "company": "MSFT",
+    "form_folder": "10-q",
+    "year": "2024",
+    "query": "Where are risk factors disclosed?",
+    "expected_section": "ITEM 1A",
+    "allow_no_hits": true
+  },
+  {
+    "case_id": "NEG_004",
+    "mode": "refusal",
+    "type": "filing_scoped",
+    "company": "WMT",
+    "form_folder": "10-q",
+    "year": "2024",
+    "query": "Where are risk factors disclosed?",
+    "expected_section": "ITEM 1A",
+    "allow_no_hits": true
+  },
+  {
+    "case_id": "NEG_005",
+    "mode": "refusal",
+    "type": "filing_scoped",
+    "company": "JPM",
+    "form_folder": "10-q",
+    "year": "2024",
+    "query": "Where are risk factors disclosed?",
+    "expected_section": "ITEM 1A",
+    "allow_no_hits": true
+  },
+  {
+    "case_id": "NEG_006",
+    "mode": "refusal",
+    "type": "filing_scoped",
+    "company": "BAC",
+    "form_folder": "10-q",
+    "year": "2024",
+    "query": "Where are risk factors disclosed?",
+    "expected_section": "ITEM 1A",
+    "allow_no_hits": true
+  },
+  {
+    "case_id": "NEG_007",
+    "mode": "refusal",
+    "type": "filing_scoped",
+    "company": "VISA",
+    "form_folder": "10-q",
+    "year": "2024",
+    "query": "Where is Item 1A risk factors disclosed?",
+    "expected_section": "ITEM 1A",
+    "allow_no_hits": true
+  },
+  {
+    "case_id": "NEG_008",
+    "mode": "refusal",
+    "type": "filing_scoped",
+    "company": "AAPL",
+    "form_folder": "10-q",
+    "year": "2024",
+    "query": "Where is risk factors section disclosed?",
+    "expected_section": "ITEM 1A",
+    "allow_no_hits": true
+  }
+]

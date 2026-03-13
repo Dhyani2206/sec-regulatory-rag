@@ -1,0 +1,11 @@
+{
+  "source_chunks": "D:\\Extra\\sec_regulatory\\storage\\rules_chunks.jsonl",
+  "index_path": "D:\\Extra\\sec_regulatory\\storage\\faiss_rules.index",
+  "vectors_path": "D:\\Extra\\sec_regulatory\\storage\\rules_vectors.npy",
+  "meta_path": "D:\\Extra\\sec_regulatory\\storage\\rules_embeddings_meta.json",
+  "count": 1205,
+  "dim": 1536,
+  "metric": "cosine",
+  "embed_model": "text-embedding-3-small",
+  "batch_size": 64
+}

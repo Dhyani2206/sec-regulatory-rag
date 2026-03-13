@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.venv/
+env/
+env
+ENV/
+
+# Environment files
+.env
+*.env
+frontend/.env
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Outputs
+outputs/
+outputs.zip
+
+# Archives
+*.zip
+
+# Storage artifacts (large runtime indexes)
+storage/embeddings.npy
+storage/faiss.index
+storage/faiss_filings.index
+storage/faiss_rules.index
+storage/rules_vectors.npy
+storage/emb_cache_rules/
+
+# Optional large metadata
+storage/chunks.jsonl
+storage/rules_chunks.jsonl

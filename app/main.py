@@ -1,7 +1,5 @@
 from __future__ import annotations
-
 from contextlib import asynccontextmanager
-
 from fastapi import FastAPI
 
 from app.api.v1.router import api_v1_router

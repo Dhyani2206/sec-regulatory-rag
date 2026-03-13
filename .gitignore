@@ -43,3 +43,11 @@ storage/emb_cache_rules/
 # Optional large metadata
 storage/chunks.jsonl
 storage/rules_chunks.jsonl
+
+storage/
+outputs/
+*.npy
+*.index
+*.jsonl
+embeddings*
+faiss*

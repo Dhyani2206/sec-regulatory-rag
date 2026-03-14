@@ -37,45 +37,6 @@ The backend is intentionally:
 ---
 
 # 3. Canonical Production Path
-# Intelligent Regulatory Review Assistant — Architecture Map
-
-## 1. System Purpose
-
-This project is a **deterministic, evidence-first regulatory RAG system** for SEC reporting.
-
-It is designed to:
-
-- Answer SEC rule questions
-- Locate disclosure sections in company filings
-- Retrieve filing and rule evidence
-- Rank and package evidence
-- Refuse unsupported answers
-- Remain audit-friendly and low-hallucination
-
-This system is **not a free-form chatbot**.  
-It is a **structured retrieval system** with explicit routing, retrieval, ranking, and refusal logic.
-
----
-
-# 2. Core Design Principles
-
-The backend is intentionally:
-
-- Deterministic
-- Evidence-first
-- Low-hallucination
-- Refusal-safe
-- Audit-friendly
-- FastAPI-wrapped but backend-driven
-
-**Important architectural rule**
-
-> The FastAPI layer is thin.  
-> The canonical answer logic lives in `src/rag/answer_engine.py`.
-
----
-
-# 3. Canonical Production Path
 Client / Frontend / Swagger
 ↓
 FastAPI

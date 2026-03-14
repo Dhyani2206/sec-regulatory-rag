@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional
+import re
+from typing import Any, Dict, List, Optional, Tuple
 
 from app.api.v1.schemas.query import (
     EvidenceItem,
@@ -11,7 +12,7 @@ from app.api.v1.schemas.query import (
     SourceItem,
     TechnicalTrace,
 )
-from app.services.options_service import is_valid_scope
+from app.services.options_service import get_available_options, is_valid_scope
 from src.rag.answer_engine import answer_query
 
 
@@ -24,6 +25,13 @@ TEXT_KEYS = [
     "section_text",
     "raw_text",
 ]
+
+FORM_PATTERNS: Tuple[Tuple[re.Pattern[str], str], ...] = (
+    (re.compile(r"\b10[\s\-]?k\b", re.IGNORECASE), "10-K"),
+    (re.compile(r"\b10[\s\-]?q\b", re.IGNORECASE), "10-Q"),
+)
+
+YEAR_RE = re.compile(r"\b(19|20)\d{2}\b")
 
 
 def _extract_text(item: Dict[str, Any]) -> Optional[str]:
@@ -254,6 +262,14 @@ def _infer_review_result(
     evidence_strength = _infer_evidence_strength(evidence, guard_reason)
     confidence = _infer_confidence(evidence_strength, status)
 
+    if status.upper() == "REFUSE" and route_intent == "invalid_scope":
+        return ReviewResult(
+            finding="invalid_scope",
+            label="Requested filing scope is not available",
+            confidence="high",
+            evidence_strength="not_found",
+        )
+
     if evidence_strength == "not_found":
         return ReviewResult(
             finding="manual_review_recommended",
@@ -372,6 +388,9 @@ def _build_review_guidance(
         guidance.append("Cross-check the rule language against the filing text before making a compliance conclusion.")
     elif review_result.finding == "manual_review_recommended":
         guidance.append("Escalate this question for manual review because strong evidence was not clearly surfaced.")
+    elif review_result.finding == "invalid_scope":
+        guidance.append("Choose a company, form, and year combination from the available options.")
+        guidance.append("If you want a rule-only answer, submit the query without filing scope.")
 
     if route_intent == "structural_section_lookup" and evidence:
         guidance.append("Use the filing section as the primary review anchor before falling back to broader semantic search.")
@@ -430,15 +449,81 @@ def _build_invalid_scope_response(payload: QueryRequest) -> QueryResponse:
     )
 
 
+# ------------------------------------------------------------------
+# Minimal, grounded inline scope extraction
+# ------------------------------------------------------------------
+def _extract_form_from_query(query: str) -> Optional[str]:
+    q = str(query or "")
+    for pattern, canonical in FORM_PATTERNS:
+        if pattern.search(q):
+            return canonical
+    return None
+
+
+def _extract_year_from_query(query: str) -> Optional[int]:
+    q = str(query or "")
+    m = YEAR_RE.search(q)
+    if not m:
+        return None
+    try:
+        return int(m.group(0))
+    except ValueError:
+        return None
+
+
+def _extract_company_ticker_from_query(query: str) -> Optional[str]:
+    """
+    Conservative ticker extraction only.
+
+    This intentionally matches only real tickers from the indexed options data.
+    It does NOT guess company names like 'Microsoft' -> 'MSFT' unless the query
+    explicitly contains the ticker token.
+    """
+    q = str(query or "").upper()
+
+    options = get_available_options()
+    tickers = sorted((c.ticker for c in options.companies), key=len, reverse=True)
+
+    for ticker in tickers:
+        if re.search(rf"\b{re.escape(ticker)}\b", q):
+            return ticker
+
+    return None
+
+
+def _resolve_payload_scope(payload: QueryRequest) -> QueryRequest:
+    """
+    Preserve explicitly provided scope.
+    Only fill missing company/form/year from the query text when the extraction
+    is conservative and grounded in real indexed metadata.
+    """
+    if payload.company and payload.form_folder and payload.year is not None:
+        return payload
+
+    extracted_company = payload.company or _extract_company_ticker_from_query(payload.query)
+    extracted_form = payload.form_folder or _extract_form_from_query(payload.query)
+    extracted_year = payload.year if payload.year is not None else _extract_year_from_query(payload.query)
+
+    return payload.model_copy(
+        update={
+            "company": extracted_company,
+            "form_folder": extracted_form,
+            "year": extracted_year,
+        }
+    )
+
+
 def run_query_service(payload: QueryRequest) -> QueryResponse:
-    if not is_valid_scope(payload.company, payload.form_folder, payload.year):
-        return _build_invalid_scope_response(payload)
+    resolved_payload = _resolve_payload_scope(payload)
+
+    if not is_valid_scope(resolved_payload.company, resolved_payload.form_folder, resolved_payload.year):
+        return _build_invalid_scope_response(resolved_payload)
 
     result = answer_query(
-        query=payload.query,
-        company=payload.company,
-        form_folder=payload.form_folder,
-        year=payload.year,
+        query=resolved_payload.query,
+        company=resolved_payload.company,
+        form_folder=resolved_payload.form_folder,
+        year=resolved_payload.year,
     )
 
     status = result.get("status", "ERROR")
@@ -459,7 +544,7 @@ def run_query_service(payload: QueryRequest) -> QueryResponse:
             evidence=evidence,
         ),
         why_it_matters=_build_why_it_matters(
-            query=payload.query,
+            query=resolved_payload.query,
             route=route,
             evidence=evidence,
         ),

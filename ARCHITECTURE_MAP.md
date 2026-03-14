@@ -96,11 +96,6 @@ FastAPI application entrypoint.
 **Connected To**
 app/api/v1/router.py
 
-
----
-
-## `app/api/v1/router.py`
-
 ---
 
 ## `app/api/v1/router.py`
@@ -304,17 +299,17 @@ not_applicable
 
 **Examples**
 
-| Topic | 10-K Section |
-|------|--------------|
-Risk Factors | Item 1A  
-MD&A | Item 7  
-Legal Proceedings | Item 3  
+| Topic            | 10-K Section |
+|------------------|--------------|
+|Risk Factors      | Item 1A      |
+|MD&A              | Item 7       |
+|Legal Proceedings | Item 3       |
 
-| Topic | 10-Q Section |
-|------|--------------|
-Risk Factors | Item 1A  
-MD&A | Item 2  
-Legal Proceedings | Item 1  
+| Topic            | 10-Q Section |
+|------------------|--------------|
+|Risk Factors      | Item 1A      |
+|MD&A              | Item 2       |
+|Legal Proceedings | Item 1       |
 
 ---
 
@@ -540,21 +535,21 @@ API -> query_service
 
 # 18. Short Summary
 
-| Component                  | Purpose                    |
-|----------------------------|----------------------------|
-`answer_engine.py`           | canonical answer pipeline  |
-`query_router.py`            | filing routing             |
-`rules_router.py`            | rule routing               |
-`retrieve_filing_sections.py`| semantic filing retrieval  |
-`retrieve_rules.py`          | rule retrieval             |
-`filing_evidence.py`         | filing evidence loader     |
-`evidence_ranker.py`         | evidence ranking           |
-`evidence_pack.py`           | evidence packaging         |
-`query_service.py`           | API integration            |
-`options_service.py`         | ticker/form/year discovery |
-`chunks.jsonl`               | filing corpus              |
-`rules_chunks.jsonl`         | rules corpus               |
-`faiss.index`                | filing vector index        |
-`faiss_rules.index`          | rule vector index          |
+| Component                   | Purpose                    |
+|-----------------------------|----------------------------|
+|`answer_engine.py`           | canonical answer pipeline  |
+|`query_router.py`            | filing routing             |
+|`rules_router.py`            | rule routing               |
+|`retrieve_filing_sections.py`| semantic filing retrieval  |
+|`retrieve_rules.py`          | rule retrieval             |
+|`filing_evidence.py`         | filing evidence loader     |
+|`evidence_ranker.py`         | evidence ranking           |
+|`evidence_pack.py`           | evidence packaging         |
+|`query_service.py`           | API integration            |
+|`options_service.py`         | ticker/form/year discovery |
+|`chunks.jsonl`               | filing corpus              |
+|`rules_chunks.jsonl`         | rules corpus               |
+|`faiss.index`                | filing vector index        |
+|`faiss_rules.index`          | rule vector index          |
 
 ---

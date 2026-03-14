@@ -38,19 +38,18 @@ Retrieve Filing Data    Retrieve Rule Data
       ↓                        ↓
 Get Filing Snippets     Get Rule Snippets
 
-            ↓
-     Evidence Guard
-(Citation + Hallucination Check)
+                  ↓
+           Evidence Guard
+   (Citation + Hallucination Check)
 
-           ↓
-     LLM Answer Generation
+                 ↓
+        LLM Answer Generation
 
-           ↓
-      Structured Response
-
-• Final Answer
-• Filing Evidence
-• Rule Evidence
+                 ↓
+         Structured Response
+          • Final Answer
+          • Filing Evidence
+          • Rule Evidence
 ```
 
 ## The project is split into two main layers:

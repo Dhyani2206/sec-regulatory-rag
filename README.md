@@ -21,10 +21,6 @@ The system supports:
 
 The system follows a **Deep RAG pipeline for regulatory compliance intelligence**, integrating frontend interaction, backend orchestration, retrieval pipelines, and structured answer generation.
 
-### System Architecture
-
-![RAG Architecture]([docs/rag_pipeline.png](https://drive.google.com/file/d/1SG_inECvjnbP3Ay7qy548cnWo7k3ujQk/view?usp=sharing))
-
 ### End-to-End Pipeline
 
 ```text

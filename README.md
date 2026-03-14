@@ -235,5 +235,3 @@ Future development directions include:
 * regulatory change monitoring
 * automated compliance reporting
 
-
-MIT License

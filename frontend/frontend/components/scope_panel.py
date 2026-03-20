@@ -20,7 +20,36 @@ def _find_company_record(
 
 
 def render_scope_panel(options_payload: dict) -> dict:
-    st.markdown("### Filing Scope")
+    st.markdown("### Query mode")
+
+    mode = st.radio(
+        "How should the backend scope this question?",
+        options=("filing", "rules_only"),
+        format_func=lambda x: (
+            "Filing-scoped — company, form, and year (10-K / 10-Q)"
+            if x == "filing"
+            else "Rules only — CFR / Regulation S-K (no filing scope)"
+        ),
+        horizontal=True,
+        help=(
+            "Use **Rules only** for questions like “What does 17 CFR 229.105 require?” "
+            "Use **Filing-scoped** when the answer must refer to a specific filing."
+        ),
+    )
+
+    if mode == "rules_only":
+        st.info(
+            "No company or year is sent to the API. The backend retrieves **regulatory rule** "
+            "evidence only (deterministic, evidence-first)."
+        )
+        return {
+            "mode": "rules_only",
+            "company": None,
+            "form_folder": None,
+            "year": None,
+        }
+
+    st.markdown("### Filing scope")
 
     companies = _safe_companies(options_payload)
     ticker_options = [
@@ -32,6 +61,7 @@ def render_scope_panel(options_payload: dict) -> dict:
     if not ticker_options:
         st.error("No company options were returned by the backend.")
         return {
+            "mode": "filing",
             "company": None,
             "form_folder": None,
             "year": None,
@@ -84,6 +114,7 @@ def render_scope_panel(options_payload: dict) -> dict:
             st.warning("No valid years available for the selected company/form.")
 
     return {
+        "mode": "filing",
         "company": selected_company,
         "form_folder": selected_form,
         "year": selected_year,

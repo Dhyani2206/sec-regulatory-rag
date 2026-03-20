@@ -110,7 +110,10 @@ def load_scoped_section_chunk_evidence(
 
         if rec_company != company_norm:
             continue
-        if rec_form != form_norm:
+        # Skip form check only when the chunk carries no form metadata.
+        # All indexed filings in this corpus are 10-K; chunks that omit the
+        # form field should be treated as matching any requested form.
+        if rec_form and rec_form != form_norm:
             continue
         if rec_year != year_norm:
             continue

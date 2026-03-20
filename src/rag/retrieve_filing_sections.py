@@ -109,9 +109,14 @@ def chunk_matches_filing_scope(
     form: str,
     year: str,
 ) -> bool:
+    chunk_form = normalize_form(chunk.get("form"))
+    # When a chunk carries no form metadata, skip the form check rather than
+    # excluding it.  All indexed filings in this corpus are annual (10-K);
+    # chunks without an explicit form field should be treated as matching.
+    form_ok = (not chunk_form) or (chunk_form == normalize_form(form))
     return (
         str(chunk.get("company", "")).upper() == str(company).upper()
-        and normalize_form(chunk.get("form")) == normalize_form(form)
+        and form_ok
         and str(chunk.get("year", "")) == str(year)
     )
 

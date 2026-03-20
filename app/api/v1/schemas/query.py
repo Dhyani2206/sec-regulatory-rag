@@ -49,6 +49,7 @@ class ReviewResult(BaseModel):
 class TechnicalTrace(BaseModel):
     route: Optional[Union[str, Dict[str, Any]]] = None
     guard_reason: Optional[Union[str, Dict[str, Any]]] = None
+    agent_steps: Optional[List[Dict[str, Any]]] = None
 
 
 class QueryResponse(BaseModel):

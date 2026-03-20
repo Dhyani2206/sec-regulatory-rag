@@ -42,6 +42,7 @@ from typing import List, Optional
 import numpy as np
 import faiss
 from dotenv import load_dotenv
+from openai import AzureOpenAI
 
 from src.rag.config import RAGConfig
 
@@ -49,8 +50,9 @@ load_dotenv()
 
 
 def require_api_key():
-    if not os.getenv("OPENAI_API_KEY"):
-        raise RuntimeError("OPENAI_API_KEY not set. Put it in .env and restart terminal.")
+    missing = [v for v in ("AZURE_OPENAI_API_KEY", "AZURE_OPENAI_ENDPOINT", "AZURE_OPENAI_API_VERSION") if not os.getenv(v)]
+    if missing:
+        raise RuntimeError(f"Missing Azure OpenAI env vars: {', '.join(missing)}. Add them to .env and restart.")
 
 
 def load_rule_chunks(cfg: RAGConfig) -> List[dict]:
@@ -76,29 +78,31 @@ def normalize(vecs: np.ndarray) -> np.ndarray:
 
 def embed_openai_batch(texts: List[str], model: str) -> np.ndarray:
     """
-    Exact same embedding approach as filings:
-    - OpenAI embeddings
-    - L2 normalize for cosine similarity with IndexFlatIP
+    Embed via Azure OpenAI — L2-normalized for cosine similarity with FAISS IndexFlatIP.
     """
-    from openai import OpenAI
-    client = OpenAI()
-    resp = client.embeddings.create(model=model, input=texts)
+    client = AzureOpenAI(
+        api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+        azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
+        api_version=os.getenv("AZURE_OPENAI_API_VERSION", "2024-12-01-preview"),
+    )
+    deployment = os.getenv("AZURE_OPENAI_EMBEDDING_DEPLOYMENT") or model
+    resp = client.embeddings.create(model=deployment, input=texts)
     vecs = np.asarray([d.embedding for d in resp.data], dtype=np.float32)
     return normalize(vecs)
 
 
 def main():
     cfg = RAGConfig()
-     
+
     require_api_key()
 
-    Path(cfg.store_dir).mkdir(parents=True, exist_ok=True)
+    cfg.storage_dir.mkdir(parents=True, exist_ok=True)
 
-    # Rules-specific checkpoints (don’t overwrite filings)
-    ckpt_path = Path(cfg.store_dir) / "rules_vectors.npy"
+    # Rules-specific checkpoints (do not overwrite filings)
+    ckpt_path = cfg.storage_dir / "rules_vectors.npy"
     print("[build_rules_index] vectors file:", ckpt_path.resolve())
-    ckpt_meta = Path(cfg.store_dir) / "rules_ckpt_meta.json"
-    index_path = Path(cfg.faiss_rules_index_path).resolve()
+    ckpt_meta = cfg.rules_ckpt_meta_path
+    index_path = cfg.rules_index_path
 
     chunks = load_rule_chunks(cfg)
     texts = [c["text"] for c in chunks]
@@ -115,7 +119,7 @@ def main():
         if isinstance(meta_obj, dict):
             done = int(meta_obj.get("done", 0))
             model_used = meta_obj.get("model", "")
-            if model_used == cfg.embedding_model and 0 < done <= n:
+            if model_used == cfg.rules_embedding_model and 0 < done <= n:
                 print(f"[build_rules_index] Resuming from checkpoint: {done}/{n}")
                 vecs = np.load(ckpt_path)
                 start_i = done
@@ -126,7 +130,7 @@ def main():
         
     # Keep batch size smaller than filings to be gentle on rate limits
     batch_size = 128
-    print(f"[build_rules_index] Embedding model: {cfg.embedding_model}")
+    print(f"[build_rules_index] Embedding model: {cfg.rules_embedding_model}")
     print(f"[build_rules_index] Batch size: {batch_size}")
 
     i = start_i
@@ -138,7 +142,7 @@ def main():
         attempt = 0
         while True:
             try:
-                bvec = embed_openai_batch(batch, cfg.embedding_model)
+                bvec = embed_openai_batch(batch, cfg.rules_embedding_model)
                 break
             except Exception as e:
                 attempt += 1
@@ -163,7 +167,7 @@ def main():
         if i % 512 == 0 or i == n:
             np.save(ckpt_path, vecs)
             ckpt_meta.write_text(
-                json.dumps({"done": i, "model": cfg.embedding_model}, indent=2),
+                json.dumps({"done": i, "model": cfg.rules_embedding_model}, indent=2),
                 encoding="utf-8"
             )
             print(f"[build_rules_index] Checkpoint saved: {i}/{n}")

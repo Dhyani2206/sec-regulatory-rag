@@ -139,14 +139,60 @@ def render_evidence(evidence: list) -> None:
         else:
             st.markdown(f"- {item}")
 
+def _render_agent_steps(steps: list) -> None:
+    """Render agent tool call steps as a readable numbered list."""
+    if not steps:
+        st.caption("No tool calls recorded.")
+        return
+
+    for i, step in enumerate(steps, start=1):
+        tool_name = step.get("tool", "unknown")
+        args = step.get("args", {})
+        output = step.get("output_snippet", "")
+
+        with st.expander(f"Step {i}: `{tool_name}`", expanded=False):
+            # Arguments
+            st.markdown("**Arguments**")
+            arg_lines = [f"- `{k}`: {v}" for k, v in args.items() if v is not None and v != ""]
+            if arg_lines:
+                st.markdown("\n".join(arg_lines))
+            else:
+                st.caption("_(no arguments)_")
+
+            # Output snippet
+            if output:
+                st.markdown("**Evidence retrieved** _(truncated)_")
+                st.code(output, language=None)
+            else:
+                st.caption("_(no output recorded)_")
+
+
 def render_technical_trace(technical_trace: dict | None) -> None:
     trace = as_dict(technical_trace)
+    if not trace:
+        return
+
+    agent_steps = trace.get("agent_steps")
+
     st.markdown("### Technical Trace")
-    with st.expander("Show retrieval and routing trace", expanded=False):
-        if trace:
+
+    if agent_steps:
+        # Agent mode: show a human-readable tool call breakdown first.
+        enriched_q = (trace.get("route") or {}).get("enriched_query")
+        if enriched_q:
+            st.caption(f"Enriched query sent to agent: _{enriched_q}_")
+
+        st.markdown(
+            f"The agent called **{len(agent_steps)} tool(s)** to gather evidence:"
+        )
+        _render_agent_steps(agent_steps)
+
+        with st.expander("Raw trace JSON", expanded=False):
+            st.json({k: v for k, v in trace.items() if k != "agent_steps"})
+    else:
+        # Deterministic mode: plain JSON trace.
+        with st.expander("Show retrieval and routing trace", expanded=False):
             st.json(trace)
-        else:
-            st.caption("No technical trace returned.")
 
 def render_download_panel(response: dict) -> None:
     json_bytes = json.dumps(response, indent=2).encode("utf-8")

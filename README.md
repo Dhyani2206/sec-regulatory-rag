@@ -180,22 +180,61 @@ SEC_REGULATORY/
 ### Install dependencies
 
 ```bash
+python3 -m venv venv
+source venv/bin/activate   # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
+
+### Configure environment
+
+Create a `.env` file in the project root (see `.gitignore` — never commit secrets).
+
+* **Azure OpenAI (embeddings at query time):** set `AZURE_OPENAI_API_KEY`, `AZURE_OPENAI_ENDPOINT`, `AZURE_OPENAI_API_VERSION`, and `AZURE_OPENAI_EMBEDDING_DEPLOYMENT` (deployment must match `text-embedding-3-large` dimensions used to build indexes).
+* **Optional artifact download:** if `storage/` files are missing, set `CHUNKS_JSONL_URL`, `FAISS_INDEX_URL`, etc., as documented in `app/services/artifact_bootstrap.py`.
+
+### Build or restore `storage/` artifacts
+
+Large indexes are not in git. Either download via env URLs on first API startup, or build locally (see `src/rag/build/` and `src/rules/build_rules_index.py`).
 
 ### Start the backend
 
 ```bash
-uvicorn app:app --reload
+source venv/bin/activate
+python run.py
 ```
+
+Or: `uvicorn app.main:app --reload --host 0.0.0.0 --port 8000`
 
 ### Launch the frontend
 
 ```bash
+source venv/bin/activate
 streamlit run frontend/app.py
 ```
 
-The system will then be accessible through the Streamlit interface.
+Point the UI at a different API base URL if needed:
+
+```bash
+export RAG_API_BASE_URL=http://127.0.0.1:8000
+streamlit run frontend/app.py
+```
+
+The Streamlit app supports **Rules only** (CFR / Reg S-K, no filing scope) and **Filing-scoped** questions (company, 10-K / 10-Q, year from backend options).
+
+### API smoke tests
+
+With `storage/` populated and (for embedding tests) Azure configured:
+
+```bash
+pytest tests/test_api_smoke.py -v
+```
+
+### Documentation (how the app works)
+
+- **In the browser (while the API is running):** open [http://localhost:8000/documentation](http://localhost:8000/documentation) — or [http://localhost:8000/api/v1/documentation](http://localhost:8000/api/v1/documentation) if your gateway only forwards `/api/v1/*`. **Restart the API** after pulling changes so routes reload.
+- **In the repository:** `docs/application-guide.md` (same content, version-controlled for audit review).
+
+The Streamlit sidebar includes a **“How the app works”** link to that page.
 
 ## Example Queries
 

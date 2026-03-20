@@ -33,9 +33,10 @@ def iter_jsonl(path: Path):
             yield json.loads(line)
 
 def main(year: str = "2025"):
+    regulations_processed_dir = CFG.data_dir / "regulations_processed"
     inputs = [
-        CFG.regulations_processed_dir / f"regsk_229_{year}.jsonl",
-        CFG.regulations_processed_dir / f"regsx_210_{year}.jsonl",
+        regulations_processed_dir / f"regsk_229_{year}.jsonl",
+        regulations_processed_dir / f"regsx_210_{year}.jsonl",
     ]
     for p in inputs:
         if not p.exists():
@@ -88,7 +89,7 @@ def main(year: str = "2025"):
         "rule_chunks_written": wrote,
         "per_part_chunks": per_part,
     }
-    mf = CFG.store_dir / f"rules_chunks_manifest_{year}.json"
+    mf = CFG.storage_dir / f"rules_chunks_manifest_{year}.json"
     mf.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
 
     print(f"Wrote {wrote} rules chunks -> {out}")

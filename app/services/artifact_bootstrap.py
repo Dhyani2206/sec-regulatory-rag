@@ -1,15 +1,19 @@
 from __future__ import annotations
+import logging
 import os
 from pathlib import Path
+
 import requests
+
+logger = logging.getLogger(__name__)
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 STORAGE_DIR = PROJECT_ROOT / "storage"
 
+# Runtime artifacts. Legacy faiss_filings.index is not required (retrieval uses faiss.index).
 ARTIFACTS = {
     "CHUNKS_JSONL_URL": "chunks.jsonl",
     "FAISS_INDEX_URL": "faiss.index",
-    "FAISS_FILINGS_INDEX_URL": "faiss_filings.index",
     "FAISS_RULES_INDEX_URL": "faiss_rules.index",
     "EMBEDDINGS_NPY_URL": "embeddings.npy",
     "RULES_CHUNKS_JSONL_URL": "rules_chunks.jsonl",
@@ -40,6 +44,7 @@ def ensure_storage_artifacts() -> None:
             missing.append((env_name, path))
 
     if not missing:
+        logger.debug("All required storage artifacts are present under %s", STORAGE_DIR)
         return
 
     for env_name, path in missing:
